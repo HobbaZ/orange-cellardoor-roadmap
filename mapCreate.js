@@ -7,7 +7,11 @@ function toGeoJSON(data) {
       type: "Feature",
       properties: {
         name: w.name,
-        tags: w.tags,
+        address: w.address,
+        phone: w.phone,
+        website: w.website,
+        image: w.image,
+        tags: JSON.stringify(w.tags),
       },
       geometry: {
         type: "Point",
@@ -15,6 +19,59 @@ function toGeoJSON(data) {
       },
     })),
   };
+}
+
+function renderSidebar(data, map) {
+  const list = document.getElementById("winery-list");
+
+  list.innerHTML = "";
+
+  data.forEach((winery) => {
+    const card = document.createElement("div");
+    const lat = winery.coords[0];
+    const lng = winery.coords[1];
+
+    card.className = "winery-card";
+
+    card.innerHTML = `
+      <img src="${winery.image}" alt="${winery.name}" />
+
+      <div class="winery-card-content">
+        <h4>${winery.name}</h4>
+
+        <p>${winery.address}</p>
+
+        <button class="btn btn-sm btn-dark mt-2"><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
+  Get Directions
+</a></button>
+
+        <div class="winery-tags">
+          ${winery.tags
+            .map((tag) => `<span class="winery-tag">${tag}</span>`)
+            .join("")}
+        </div>
+      </div>
+    `;
+
+    // 🎯 Click card → fly to winery
+    card.addEventListener("click", () => {
+      map.flyTo({
+        center: [winery.coords[1], winery.coords[0]],
+        zoom: 14,
+      });
+
+      new maplibregl.Popup()
+        .setLngLat([winery.coords[1], winery.coords[0]])
+        .setHTML(
+          `
+          <strong>${winery.name}</strong>
+        `,
+        )
+        .addTo(map);
+    });
+
+    list.appendChild(card);
+  });
 }
 
 function mapCreate() {
@@ -44,13 +101,13 @@ function mapCreate() {
   map.on("load", () => {
     console.log("map loaded");
 
-    // 🧠 Add source
+    // Add source
     map.addSource("wineries", {
       type: "geojson",
       data: toGeoJSON(wineries),
     });
 
-    // 🎯 Add layer (circle markers)
+    // Add layer (circle markers)
     map.addLayer({
       id: "wineries-layer",
       type: "circle",
@@ -73,6 +130,8 @@ function mapCreate() {
       },
     });
 
+    renderSidebar(wineries, map);
+
     // 🪄 Popup on click
     map.on("click", "wineries-layer", (e) => {
       const props = e.features[0].properties;
@@ -81,8 +140,9 @@ function mapCreate() {
         .setLngLat(e.lngLat)
         .setHTML(
           `
-          <strong>${props.name}</strong><br>
-          ${JSON.parse(props.tags).join(", ")}
+          <div class="wine-popup">
+          <strong>${props.name}</strong>
+      </div>
         `,
         )
         .addTo(map);
@@ -97,7 +157,7 @@ function mapCreate() {
       map.getCanvas().style.cursor = "";
     });
 
-    // 🔽 filter system
+    // filter system
     document.getElementById("filter").addEventListener("change", (e) => {
       const filter = e.target.value;
 
@@ -106,7 +166,11 @@ function mapCreate() {
           ? wineries
           : wineries.filter((w) => w.tags.includes(filter));
 
+      // update map
       map.getSource("wineries").setData(toGeoJSON(filtered));
+
+      // update sidebar
+      renderSidebar(filtered, map);
     });
   });
 }

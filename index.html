@@ -18,29 +18,39 @@
 
 <body>
 
-    <div class="container-fluid py-4">
-        <div class="mx-auto filterContainer">
-            <div class="w-50 mx-auto blurred">
-                <h3 class="mx-auto mb-3">Orange NSW Wineries</h3>
+    <div class="container-fluid">
+        <div class="row">
 
+            <!-- Sidebar -->
+            <div class="col-md-4 sidebar">
+                <div class="blurred">
+                    <h3 class="mb-3">Orange NSW Wineries</h3>
 
+                    <select id="filter" class="form-select mb-3">
+                        <option value="All">All</option>
+                        <option>Wine only</option>
+                        <option>Wine and Cheese</option>
+                        <option>Restaurant</option>
+                        <option>Live Music</option>
+                        <option>Family Friendly</option>
+                        <option>Dog Friendly</option>
+                        <option>Outdoor Area</option>
+                    </select>
 
-                <!-- Filter -->
-                <select id="filter" class="form-select mb-3" id="filter">
-                    <option value="All">All</option>
-                    <option>Wine only</option>
-                    <option>Wine and Cheese</option>
-                    <option>Restaurant</option>
-                    <option>Live Music</option>
-                    <option>Family Friendly</option>
-                    <option>Dog Friendly</option>
-                    <option>Outdoor Area</option>
-                </select>
+                    <div id="winery-list"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- Map -->
-        <div id="map"></div>
+            <!-- Map -->
+            <div class="col-md-8 p-0">
+                <div id="map"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
     </div>
 
     <!-- Leaflet JS -->
