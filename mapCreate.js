@@ -6,6 +6,7 @@ function toGeoJSON(data) {
     features: data.map((w) => ({
       type: "Feature",
       properties: {
+        id: w.id,
         name: w.name,
         address: w.address,
         phone: w.phone,
@@ -32,6 +33,7 @@ function renderSidebar(data, map) {
     const lng = winery.coords[1];
 
     card.className = "winery-card";
+    card.dataset.id = winery.id;
 
     card.innerHTML = `
       <img src="${winery.image}" alt="${winery.name}" />
@@ -136,14 +138,33 @@ function mapCreate() {
     map.on("click", "wineries-layer", (e) => {
       const props = e.features[0].properties;
 
+      // remove previous active
+      document
+        .querySelectorAll(".winery-card")
+        .forEach((c) => c.classList.remove("active"));
+
+      // highlight matching card
+      const activeCard = document.querySelector(
+        `.winery-card[data-id="${props.id}"]`,
+      );
+
+      if (activeCard) {
+        activeCard.classList.add("active");
+
+        activeCard.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+
       new maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(
           `
-          <div class="wine-popup">
-          <strong>${props.name}</strong>
+      <div class="wine-popup">
+        <strong>${props.name}</strong>
       </div>
-        `,
+    `,
         )
         .addTo(map);
     });

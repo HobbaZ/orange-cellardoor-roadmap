@@ -2,6 +2,7 @@ console.log("winery list loaded");
 
 export const wineries = [
   {
+    id: 1,
     name: "Stockman's Ridge Wines",
     address: "21 Boree Ln, Lidster NSW 2800",
     phone: "(02) 6365 6212",
@@ -12,6 +13,7 @@ export const wineries = [
     tags: ["Restaurant", "Wine and Cheese", "Outdoor Area"],
   },
   {
+    id: 2,
     name: "Strawhouse Wines",
     address: "116 Boree Ln, Lidster NSW 2800",
     phone: "0402 498 419",
@@ -22,6 +24,7 @@ export const wineries = [
     tags: ["Wine only", "Dog Friendly", "Outdoor Area"],
   },
   {
+    id: 3,
     name: "Canobolas Wines",
     address: "Boree Ln, Orange NSW 2800",
     phone: "",
@@ -32,6 +35,7 @@ export const wineries = [
     tags: ["Family Friendly", "Outdoor Area", "Wine and Cheese"],
   },
   {
+    id: 4,
     name: "Mayfield Wines",
     address: "954 Icely Rd, Orange NSW 2800",
     phone: "0458 695 260",
