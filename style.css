@@ -20,6 +20,11 @@ body {
   font-family: Arial, sans-serif;
 }
 
+button a {
+  color: white;
+  text-decoration: none;
+}
+
 .container-fluid {
   height: 100vh;
   padding: 0;
@@ -91,6 +96,23 @@ body {
 
 .winery-card-content {
   padding: 14px;
+}
+
+.winery-tags {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.winery-tag {
+  background: #8b0000;
+  color: white;
+  border-radius: 50px;
+  padding: 5px;
+  font-size: 12px;
 }
 
 /* 📱 TABLET */
